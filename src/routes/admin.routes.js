@@ -5,7 +5,8 @@ import {
   getAllUsers,
   getAdminStats,
   updateJobStatus,
-  deleteUser
+  deleteUser,
+  getAdminNotifications
 } from "../controllers/admin.controller.js";
 
 const router = express.Router();
@@ -14,4 +15,5 @@ router.get("/users", protect, adminOnly, getAllUsers);
 router.get("/stats", protect, adminOnly, getAdminStats);
 router.put("/job/:id/status", protect, adminOnly, updateJobStatus);
 router.delete("/user/:id",protect,adminOnly,deleteUser);
+router.get("/notifications", protect, adminOnly, getAdminNotifications);
 export default router;

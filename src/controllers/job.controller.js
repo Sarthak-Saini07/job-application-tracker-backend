@@ -5,25 +5,28 @@ import {
   deleteJobService,
   getJobStatsService,
 } from "../services/job.service.js";
-
+import Notification from "../models/notification.model.js";
 /**
  * Create Job
  */
-export const createJob = async (req, res) => {
-  try {
-    const job = await createJobService(req.body, req.user._id);
+export const createJobService = async (data, userId) => {
+  // Create Job
+  const job = await Job.create({
+    ...data,
+    user: userId
+  });
 
-    return res.status(201).json({
-      success: true,
-      message: "Job created successfully",
-      data: job,
-    });
-  } catch (error) {
-    return res.status(400).json({
-      success: false,
-      message: error.message,
-    });
-  }
+  // Get user details (to show name in notification)
+  const user = await User.findById(userId);
+
+  // 🔔 Create Notification for Admin
+  await Notification.create({
+    message: `${user.name} applied for ${job.role} at ${job.companyName}`,
+    type: "JOB_CREATED",
+    user: userId
+  });
+
+  return job;
 };
 
 /**

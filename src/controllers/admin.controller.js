@@ -4,7 +4,7 @@ import {
   updateJobStatusService,
   deleteUserService
 } from "../services/admin.service.js";
-
+import Notification from "../models/notification.model.js";
 export const getAllUsers = async (req, res) => {
   try {
     const users = await getAllUsersService();
@@ -53,6 +53,25 @@ export const deleteUser = async (req, res) => {
 
   } catch (error) {
     res.status(400).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+export const getAdminNotifications = async (req, res) => {
+  try {
+    const notifications = await Notification
+      .find()
+      .populate("user", "name email")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      data: notifications
+    });
+
+  } catch (error) {
+    res.status(500).json({
       success: false,
       message: error.message
     });

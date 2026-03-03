@@ -58,6 +58,27 @@ export const deleteUser = async (req, res) => {
     });
   }
 };
+// export const getAdminNotifications = async (req, res) => {
+//   try {
+//     const notifications = await Notification
+//       .find()
+//       .populate("user", "name email")
+//       .sort({ createdAt: -1 });
+
+//     res.status(200).json({
+//       success: true,
+//       data: notifications
+//     });
+
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: error.message
+//     });
+//   }
+// };
+
+
 export const getAdminNotifications = async (req, res) => {
   try {
     const notifications = await Notification
@@ -65,15 +86,14 @@ export const getAdminNotifications = async (req, res) => {
       .populate("user", "name email")
       .sort({ createdAt: -1 });
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
-      data: notifications
+      data: notifications,
     });
-
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };

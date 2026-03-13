@@ -5,30 +5,51 @@ import { sendOtpEmail } from "../utils/sendEmail.js";
 /**
  * Register Controller
  */
+// export const register = async (req, res) => {
+//   try {
+//     const result = await registerUser(req.body);
+//     const otp = generateOTP();
+//     const user = await User.findById(result._id);
+//     user.otp = otp;
+//     user.otpExpires = Date.now() + 5 * 60 * 1000;
+//     await user.save();
+//     await sendOtpEmail(user.email, otp);
+//     console.log("registration block entered",req.body);
+//     return res.status(201).json({
+//       success: true,
+//       message: "User registered successfully",
+//       data: result,
+//     });
+//   } catch (error) {
+//     console.log("registration error:",error.message);
+//     return res.status(400).json({
+//       success: false,
+//       message: error.message,
+//     });
+//   }
+// };
 export const register = async (req, res) => {
   try {
+    // Everything happens inside registerUser now
     const result = await registerUser(req.body);
-    const otp = generateOTP();
-    const user = await User.findById(result._id);
-    user.otp = otp;
-    user.otpExpires = Date.now() + 5 * 60 * 1000;
-    await user.save();
-    await sendOtpEmail(user.email, otp);
-    console.log("registration block entered",req.body);
+
+    // Send the email using the data returned
+    await sendOtpEmail(result.user.email, result.user.otp);
+
     return res.status(201).json({
       success: true,
-      message: "User registered successfully",
-      data: result,
+      message: "Registration successful. OTP sent to email",
+      data: result
     });
+
   } catch (error) {
-    console.log("registration error:",error.message);
+    console.error("Registration Error:", error.message);
     return res.status(400).json({
       success: false,
-      message: error.message,
+      message: error.message
     });
   }
 };
-
 /**
  * Login Controller
  */

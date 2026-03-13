@@ -22,8 +22,11 @@ app.use(limiter);
 // CORS
 app.use(
   cors({
-    origin: "https://job-application-tracker-fr-git-c5384d-sarthak-saini07s-projects.vercel.app/",
-    credentials: true,
+    origin: [
+      "https://job-application-tracker-frontend-zeta.vercel.app",
+      "https://job-application-tracker-fr-git-c5384d-sarthak-saini07s-projects.vercel.app"
+    ],
+    credentials: true
   })
 );
 

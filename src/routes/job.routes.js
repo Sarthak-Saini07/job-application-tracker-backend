@@ -10,7 +10,7 @@ import {
 import { protect } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
-
+router.get("/stats", protect, getJobStats);
 /**
  * @route   POST /api/jobs
  * @desc    Create a new job
@@ -44,6 +44,6 @@ router.delete("/:id", protect, deleteJob);
  * @desc    Get dashboard statistics
  * @access  Private
  */
-router.get("/stats", protect, getJobStats);
+
 
 export default router;

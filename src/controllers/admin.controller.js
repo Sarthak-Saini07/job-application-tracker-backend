@@ -2,7 +2,8 @@ import {
   getAllUsersService,
   getAdminStatsService,
   updateJobStatusService,
-  deleteUserService
+  deleteUserService,
+  getAllJobsService
 } from "../services/admin.service.js";
 import Notification from "../models/notification.model.js";
 export const getAllUsers = async (req, res) => {
@@ -11,6 +12,16 @@ export const getAllUsers = async (req, res) => {
     res.status(200).json({ success: true, data: users });
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch users" });
+  }
+};
+
+export const getAllJobs = async (req, res) => {
+  try {
+    const jobs = await getAllJobsService();
+    res.status(200).json({ success: true, data: jobs });
+  } catch (error) {
+    console.error("ADMIN GET JOBS ERROR:", error);
+    res.status(500).json({ message: "Failed to fetch jobs" });
   }
 };
 

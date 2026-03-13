@@ -174,7 +174,7 @@ export const getJobStatsService = async (userId) => {
     const status = job.status.toLowerCase();
 
     if (status === "applied") stats.applied++;
-    if (status === "interview") stats.interview++;
+    if (status === "interview" || status === "interviewing") stats.interview++;
     if (status === "offer") stats.offer++;
     if (status === "rejected") stats.rejected++;
   });

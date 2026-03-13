@@ -126,7 +126,12 @@ import {
  */
 export const createJob = async (req, res) => {
   try {
-    const job = await createJobService(req.body, req.user._id);
+    const jobData = { ...req.body };
+    if (req.file) {
+      jobData.cvUrl = req.file.path;
+    }
+
+    const job = await createJobService(jobData, req.user._id);
 
     return res.status(201).json({
       success: true,

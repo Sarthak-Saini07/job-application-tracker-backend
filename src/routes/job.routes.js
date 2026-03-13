@@ -8,15 +8,28 @@ import {
 } from "../controllers/job.controller.js";
 
 import { protect } from "../middlewares/auth.middleware.js";
+import { upload } from "../config/cloudinary.js";
 
 const router = express.Router();
+
+const validateJob = (req, res, next) => {
+  const { companyName, role } = req.body;
+  if (!companyName || !role) {
+    return res.status(400).json({
+      success: false,
+      message: "companyName and role are required fields",
+    });
+  }
+  next();
+};
+
 router.get("/stats", protect, getJobStats);
 /**
  * @route   POST /api/jobs
  * @desc    Create a new job
  * @access  Private
  */
-router.post("/", protect, createJob);
+router.post("/", protect, upload.single("cv"), validateJob, createJob);
 
 /**
  * @route   GET /api/jobs

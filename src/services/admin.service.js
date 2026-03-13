@@ -36,6 +36,12 @@ export const getAllUsersService = async () => {
   return await User.find().select("-password");
 };
 
+// Get all jobs for admin
+export const getAllJobsService = async () => {
+  // Populate the 'createdBy' field so admin can see who applied
+  return await Job.find().populate("createdBy", "name email").sort({ createdAt: -1 });
+};
+
 // Admin platform stats
 // export const getAdminStatsService = async () => {
 //   const totalUsers = await User.countDocuments();
@@ -107,10 +113,10 @@ export const getAdminStatsService = async () => {
   jobStatusStats.forEach((item) => {
     const status = item._id.toLowerCase();
 
-    if (status === "applied") stats.applied = item.count;
-    if (status === "interview") stats.interview = item.count;
-    if (status === "offer") stats.offer = item.count;
-    if (status === "rejected") stats.rejected = item.count;
+    if (status === "applied") stats.applied += item.count;
+    if (status === "interview" || status === "interviewing") stats.interview += item.count;
+    if (status === "offer") stats.offer += item.count;
+    if (status === "rejected") stats.rejected += item.count;
   });
 
   return stats;

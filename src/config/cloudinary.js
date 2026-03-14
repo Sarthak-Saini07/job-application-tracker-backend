@@ -52,9 +52,12 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: {
-    folder: "jobsy_cvs",
-    resource_type: "auto",   // ⭐ important
+  params: async (req, file) => {
+    return {
+      folder: "jobsy_cvs",
+      resource_type: "raw", // Bypass Cloudinary strictly blocking PDF delivery
+      public_id: `${Date.now()}_${file.originalname}`,
+    };
   },
 });
 
